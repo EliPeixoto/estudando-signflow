@@ -1,9 +1,7 @@
 package br.com.peixoto.cadastrocliente.entities;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.*;
 
 @Entity
 public class Cliente {
@@ -11,8 +9,17 @@ public class Cliente {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+
+    @Column(unique = true, nullable = false, length = 200)
+    @Size(min = 3, message = "O nome deve ter pelo menos 3 caracteres")
+    @NotBlank
     private String nome;
+
+    @NotBlank
+    @Column(unique = true)
+    @Email
     private String email;
+
 
     public Cliente() {
     }

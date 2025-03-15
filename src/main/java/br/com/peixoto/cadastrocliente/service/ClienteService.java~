@@ -1,7 +1,6 @@
 package br.com.peixoto.cadastrocliente.service;
 
 import br.com.peixoto.cadastrocliente.dto.ClienteDto;
-import br.com.peixoto.cadastrocliente.dto.ClienteResponse;
 import br.com.peixoto.cadastrocliente.entities.Cliente;
 import br.com.peixoto.cadastrocliente.exceptions.EmailJaCadastradoException;
 import br.com.peixoto.cadastrocliente.repositories.ClienteRepository;
@@ -22,7 +21,7 @@ public class ClienteService {
     private ClienteRepository repository;
 
 
-    public ClienteResponse listarClientes(Pageable pageable) {
+    public ClienteDto listarClientes(Pageable pageable) {
         Page<Cliente> listaClientes = repository.findAll(pageable);
 
         List<ClienteDto> clienteDto = listaClientes.getContent()
@@ -30,13 +29,13 @@ public class ClienteService {
                 .map(cliente -> new ClienteDto(cliente.getId(), cliente.getNome(), cliente.getEmail()))
                 .collect(Collectors.toList());
 
-        return new ClienteResponse(
+        return new ClienteDto(
                 listaClientes.getNumber(),
                 listaClientes.getTotalPages(),
                 listaClientes.getTotalElements(),
                 clienteDto
-        );
-}
+        )
+    }
 
     public Cliente buscarClientePorId(Long id) {
         Cliente cliente = repository.findById(id).orElse(null);
